@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anime Genre Gallery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=VT323&family=Wix+Madefor+Text:ital,wght@0,400..800;1,400..800&display=swap"
+    rel="stylesheet">
+  <style>
+    body {
+      font-family: "Wix Madefor Text", sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+    }
+
+    .wix-madefor-text-<uniquifier> {
+      font-family: "Wix Madefor Text", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: <weight>;
+      font-style: normal;
+    }
+
+
+    header {
+      background-image: url(https://images5.alphacoders.com/119/thumb-1920-1191337.png);
+      color: #3A3227;
+      padding: 1rem;
+      text-align: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 60px;
+    }
+
+    #filter-dropdown {
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    #category-select {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      background-color: #F2EA79;
+      color: #3A3227;
+      border-radius: 10px;
+    }
+
+    #gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
+      background-color: #fff;
+      margin-top: 30px;
+    }
+
+    .image-container {
+
+      width: 250px;
+      height: 250px;
+      margin-bottom: 1rem;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      border-radius: 6px;
+    }
+
+    .image-container:hover {
+      transform: scale(1.1);
+    }
+
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* Maintain aspect ratio and cover container */
+      display: block;
+    }
+
+    /* Lightbox styles */
+    #lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      /* Blur effect for modern browsers */
+    }
+
+    #lightbox-content {
+      position: relative;
+      max-width: 80%;
+      max-height: 80%;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    #lightbox-content img {
+      max-width: 100%;
+      max-height: 100%;
+      margin-top: 350px;
+      margin-left: 250px;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+      transition: transform 0.3s ease;
+    }
+
+    #lightbox-content.active img {
+      transform: translateY(-50%) scale(1.2);
+    }
+
+    #close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 2rem;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    /* Darkened background when lightbox is open */
+    body.lightbox-open {
+      overflow: hidden;
+    }
+
+    #lightbox-overlay {
+      display: none;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 999;
+    }
+
+    /* Media Queries */
+    @media (max-width: 1200px) {
+      .image-container {
+        width: calc(25% - 1rem);
+        /* 25% width with 1rem gap */
+      }
+    }
+
+    @media (max-width: 992px) {
+      .image-container {
+        width: calc(33.33% - 1rem);
+        /* 33.33% width with 1rem gap */
+      }
+    }
+
+    @media (max-width: 768px) {
+      .image-container {
+        width: calc(50% - 1rem);
+        /* 50% width with 1rem gap */
+      }
+    }
+
+    @media (max-width: 576px) {
+      .image-container {
+        width: 100%;
+        /* Full width */
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Anime Gallery</h1>
+    <div id="filter-dropdown">
+      <label for="category-select">Filter by genre:</label>
+      <select id="category-select">
+        <option value="all">All</option>
+        <option value="shounen">Shounen</option>
+        <option value="isekai">Isekai</option>
+        <option value="fantasy">Fantasy</option>
+        <option value="romance">Romance</option>
+        <option value="mecha">Mecha</option>
+        <option value="slice-of-life">Slice of Life</option>
+      </select>
+    </div>
+  </header>
+
+  <section id="gallery">
+    <!-- Shounen images -->
+    <div class="image-container" data-category="shounen">
+      <img src="https://upload.wikimedia.org/wikipedia/en/7/7e/Fullmetal_Alchemist_Brotherhood_key_visual.png"
+        alt="Shounen 1">
+    </div>
+    <div class="image-container" data-category="shounen">
+      <img src="https://upload.wikimedia.org/wikipedia/en/2/24/Chainsawman.jpg" alt="Shounen 2">
+    </div>
+    <div class="image-container" data-category="shounen">
+      <img src="https://upload.wikimedia.org/wikipedia/en/d/d6/Shingeki_no_Kyojin_manga_volume_1.jpg" alt="Shounen 3">
+    </div>
+    <div class="image-container" data-category="shounen">
+      <img src="https://upload.wikimedia.org/wikipedia/en/0/09/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg"
+        alt="Shounen 4">
+    </div>
+    <div class="image-container" data-category="shounen">
+      <img src="https://upload.wikimedia.org/wikipedia/en/9/90/One_Piece%2C_Volume_61_Cover_%28Japanese%29.jpg"
+        alt="Shounen 5">
+    </div>
+    <div class="image-container" data-category="shounen">
+      <img src="https://upload.wikimedia.org/wikipedia/en/1/1e/Hunter-x-hunter-phantom-rouge-poster.png"
+        alt="Shounen 6">
+    </div>
+    <div class="image-container" data-category="shounen">
+      <img src="https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg" alt="Shounen 7">
+    </div>
+    <div class="image-container" data-category="shounen">
+      <img src="https://upload.wikimedia.org/wikipedia/en/b/b7/YuYu_Hakusho_1.png" alt="Shounen 8">
+    </div>
+    <div class="image-container" data-category="shounen">
+      <img src="https://upload.wikimedia.org/wikipedia/en/7/72/Bleachanime.png" alt="Shounen 9">
+    </div>
+    <div class="image-container" data-category="shounen">
+      <img src="https://upload.wikimedia.org/wikipedia/en/6/69/Black_Clover%2C_volume_1.jpg" alt="Shounen 10">
+    </div>
+
+    <!-- Isekai images -->
+    <div class="image-container" data-category="isekai">
+      <img src="https://upload.wikimedia.org/wikipedia/en/f/f6/Mushoku_Tensei_1.png" alt="Isekai 1">
+    </div>
+    <div class="image-container" data-category="isekai">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/en/3/3c/Re-Zero_kara_Hajimeru_Isekai_Seikatsu_light_novel_volume_1_cover.jpg"
+        alt="Isekai 2">
+    </div>
+    <div class="image-container" data-category="isekai">
+      <img src="https://upload.wikimedia.org/wikipedia/en/1/18/Overlord_novel.jpg" alt="Isekai 3">
+    </div>
+    <div class="image-container" data-category="isekai">
+      <img src="https://upload.wikimedia.org/wikipedia/en/d/d4/Fate-stay_night.jpg" alt="Isekai 4">
+    </div>
+    <div class="image-container" data-category="isekai">
+      <img src="https://upload.wikimedia.org/wikipedia/en/6/60/Frieren_Beyond_Journey%27s_End.jpg" alt="Isekai 5">
+    </div>
+    <div class="image-container" data-category="isekai">
+      <img
+        src="https://m.media-amazon.com/images/M/MV5BOGJhM2U4NTgtMWI0ZC00Njc5LWJmMjktMzQzMDgzZTIzMzI0L2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_FMjpg_UX1000_.jpg"
+        alt="Isekai 6">
+    </div>
+    <div class="image-container" data-category="isekai">
+      <img src="https://upload.wikimedia.org/wikipedia/en/5/54/Black_Summoner_light_novel_volume_1_cover.jpg"
+        alt="Isekai 7">
+    </div>
+    <div class="image-container" data-category="isekai">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/en/thumb/6/65/The_Rising_of_the_Shield_Hero_light_novel_vol_1.jpg/220px-The_Rising_of_the_Shield_Hero_light_novel_vol_1.jpg"
+        alt="Isekai 8">
+    </div>
+    <div class="image-container" data-category="isekai">
+      <img src="https://upload.wikimedia.org/wikipedia/en/c/cc/Hataraku_Ma%C5%8D-sama%21_light_novel_vol_1.jpg"
+        alt="Isekai 9">
+    </div>
+    <div class="image-container" data-category="isekai">
+      <img src="https://upload.wikimedia.org/wikipedia/en/4/42/Sonny_Boy_Key_Visual.jpg" alt="Isekai 10">
+    </div>
+
+    <!-- Fantasy images -->
+    <div class="image-container" data-category="fantasy">
+      <img src="https://upload.wikimedia.org/wikipedia/en/3/3a/Black_Butler_1.png" alt="Fantasy 1">
+    </div>
+    <div class="image-container" data-category="fantasy">
+      <img src="https://upload.wikimedia.org/wikipedia/en/e/e1/FairyTail-Volume_1_Cover.jpg" alt="Fantasy 2">
+    </div>
+    <div class="image-container" data-category="fantasy">
+      <img src="https://upload.wikimedia.org/wikipedia/en/4/46/Jujutsu_kaisen.jpg" alt="Fantasy 3">
+    </div>
+    <div class="image-container" data-category="fantasy">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/bb/Gintamacharacters.jpg/250px-Gintamacharacters.jpg"
+        alt="Fantasy 4">
+    </div>
+    <div class="image-container" data-category="fantasy">
+      <img src="https://upload.wikimedia.org/wikipedia/en/3/3e/Sword_Art_Online_light_novel_volume_1_cover.jpg"
+        alt="Fantasy 5">
+    </div>
+    <div class="image-container" data-category="fantasy">
+      <img src="https://upload.wikimedia.org/wikipedia/en/e/e5/Tokyo_Ghoul_volume_1_cover.jpg" alt="Fantasy 6">
+    </div>
+    <div class="image-container" data-category="fantasy">
+      <img src="https://upload.wikimedia.org/wikipedia/en/4/49/Seraph_of_the_End.jpg" alt="Fantasy 7">
+    </div>
+    <div class="image-container" data-category="fantasy">
+      <img src="https://upload.wikimedia.org/wikipedia/en/c/c1/Nanatsu_no_Taizai_Volume_1.png" alt="Fantasy 8">
+    </div>
+    <div class="image-container" data-category="fantasy">
+      <img src="https://upload.wikimedia.org/wikipedia/en/0/02/Hellsing_1.png" alt="Fantasy 9">
+    </div>
+    <div class="image-container" data-category="fantasy">
+      <img
+        src="https://static.wikia.nocookie.net/magi-labyrinthofmagic/images/2/24/All_Characters.png/revision/latest?cb=20200108152613"
+        alt="Fantasy 10">
+    </div>
+
+    <!-- Romance images -->
+    <div class="image-container" data-category="romance">
+      <img src="https://upload.wikimedia.org/wikipedia/en/d/dc/Ouran_High_School_Vol_1_cover.jpg" alt="Romance 1">
+    </div>
+    <div class="image-container" data-category="romance">
+      <img src="https://upload.wikimedia.org/wikipedia/en/4/46/Hori-san_to_Miyamura-kun_volume_1_cover.jpg"
+        alt="Romance 2">
+    </div>
+    <div class="image-container" data-category="romance">
+      <img src="https://upload.wikimedia.org/wikipedia/en/c/cd/Toradora%21_light_novel_volume_1_cover.jpg"
+        alt="Romance 3">
+    </div>
+    <div class="image-container" data-category="romance">
+      <img src="https://upload.wikimedia.org/wikipedia/en/d/de/Your_Lie_in_April_Manga_cover.png" alt="Romance 4">
+    </div>
+    <div class="image-container" data-category="romance">
+      <img src="https://upload.wikimedia.org/wikipedia/en/b/b8/Fruits_Basket_Box_Set.jpg" alt="Romance 5">
+    </div>
+    <div class="image-container" data-category="romance">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/e/ec/Love_Com_7.png/220px-Love_Com_7.png"
+        alt="Romance 6">
+    </div>
+    <div class="image-container" data-category="romance">
+      <img src="https://upload.wikimedia.org/wikipedia/en/3/3f/Special_A_cover.jpg" alt="Romance 7">
+    </div>
+    <div class="image-container" data-category="romance">
+      <img src="https://upload.wikimedia.org/wikipedia/en/8/86/Kaguya-sama_-_Love_is_War%2C_volume_1.jpg"
+        alt="Romance 8">
+    </div>
+    <div class="image-container" data-category="romance">
+      <img src="https://upload.wikimedia.org/wikipedia/en/0/02/KaichouwaMaidSama_vol01_Cover.jpg" alt="Romance 9">
+    </div>
+    <div class="image-container" data-category="romance">
+      <img src="https://upload.wikimedia.org/wikipedia/en/9/9a/Kimi_ni_Todoke_vol_1.jpg" alt="Romance 10">
+    </div>
+
+
+    <div class="image-container" data-category="mecha">
+      <img src="https://upload.wikimedia.org/wikipedia/en/7/74/Code_Geass_R1_box_set_cover.jpg" alt="Mecha 1">
+    </div>
+    <div class="image-container" data-category="mecha">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/en/thumb/1/10/Metallic_Rouge_key_visual.jpg/220px-Metallic_Rouge_key_visual.jpg"
+        alt="Mecha 2">
+    </div>
+    <div class="image-container" data-category="mecha">
+      <img src="https://upload.wikimedia.org/wikipedia/en/e/ee/NeonGenesisEvangelionManga1.jpg" alt="Mecha 3">
+    </div>
+    <div class="image-container" data-category="mecha">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/d/d7/Lightfmpanic.jpg/220px-Lightfmpanic.jpg"
+        alt="Mecha 4">
+    </div>
+    <div class="image-container" data-category="mecha">
+      <img src="https://upload.wikimedia.org/wikipedia/en/8/8a/Pandora01jp.jpg" alt="Mecha 5">
+    </div>
+    <div class="image-container" data-category="mecha">
+      <img
+        src="https://m.media-amazon.com/images/M/MV5BMmJjMGJhN2EtYjM2Ni00OTg3LWJhOWEtMGVkMTFlZjZmODZlXkEyXkFqcGdeQXVyNDY2NDU1MzA@._V1_.jpg"
+        alt="Mecha 6">
+    </div>
+    <div class="image-container" data-category="mecha">
+      <img src="https://upload.wikimedia.org/wikipedia/en/b/b3/Gits_SAC_complete_collection_cover.jpg" alt="Mecha 7">
+    </div>
+    <div class="image-container" data-category="mecha">
+      <img src="https://upload.wikimedia.org/wikipedia/en/a/a9/Killlakillpromo.jpg" alt="Mecha 8">
+    </div>
+    <div class="image-container" data-category="mecha">
+      <img src="https://upload.wikimedia.org/wikipedia/en/c/cd/Seedfirstdvd.jpg" alt="Mecha 9">
+    </div>
+    <div class="image-container" data-category="mecha">
+      <img src="https://upload.wikimedia.org/wikipedia/en/8/8c/Heroic_Age_Promo.JPG" alt="Mecha 10">
+    </div>
+
+
+    <div class="image-container" data-category="slice-of-life">
+      <img src="https://upload.wikimedia.org/wikipedia/en/9/9c/%C5%8Ckami_Kodomo_no_Ame_to_Yuki_poster.jpg"
+        alt="Slice of Life 1">
+    </div>
+    <div class="image-container" data-category="slice-of-life">
+      <img
+        src="https://m.media-amazon.com/images/M/MV5BZDg0MWNmNjktMGEwZC00ZDlmLWI1MTUtMDBmNjQzMWM2NjBjXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg"
+        alt="Slice of Life 2">
+    </div>
+    <div class="image-container" data-category="slice-of-life">
+      <img src="https://upload.wikimedia.org/wikipedia/en/3/32/A_Silent_Voice_Film_Poster.jpg" alt="Slice of Life 3">
+    </div>
+    <div class="image-container" data-category="slice-of-life">
+      <img src="https://upload.wikimedia.org/wikipedia/en/c/c6/Flavors_of_Youth_poster.jpeg" alt="Slice of Life 4">
+    </div>
+    <div class="image-container" data-category="slice-of-life">
+      <img src="https://upload.wikimedia.org/wikipedia/en/6/6b/Hanasaku_Iroha_promo_image.jpg" alt="Slice of Life 5">
+    </div>
+    <div class="image-container" data-category="slice-of-life">
+      <img src="https://upload.wikimedia.org/wikipedia/en/6/66/Weathering_with_You_Poster.jpg" alt="Slice of Life 6">
+    </div>
+    <div class="image-container" data-category="slice-of-life">
+      <img src="https://upload.wikimedia.org/wikipedia/en/5/54/In_This_Corner_of_the_World_poster.jpeg"
+        alt="Slice of Life 7">
+    </div>
+    <div class="image-container" data-category="slice-of-life">
+      <img
+        src="https://m.media-amazon.com/images/M/MV5BZDBhYThkMWMtZTBlMi00NzMyLWE3YTktMjVjOWUwOTEyMjNlXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg"
+        alt="Slice of Life 8">
+    </div>
+    <div class="image-container" data-category="slice-of-life">
+      <img src="https://upload.wikimedia.org/wikipedia/en/e/ee/Sennenyoyu.jpg" alt="Slice of Life 9">
+    </div>
+    <div class="image-container" data-category="slice-of-life">
+      <img src="https://upload.wikimedia.org/wikipedia/en/5/5e/The_Night_Is_Short%2C_Walk_on_Girl_poster.jpeg"
+        alt="Slice of Life 10">
+    </div>
+  </section>
+
+  <div id="lightbox">
+    <div id="lightbox-content">
+      <span id="close">&times;</span>
+      <img id="lightbox-image" src="" alt="">
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+
+      $('#category-select').change(function () {
+        const category = $(this).val();
+        if (category === 'all') {
+          $('.image-container').fadeIn();
+        } else {
+          $('.image-container').each(function () {
+            if ($(this).data('category') === category) {
+              $(this).fadeIn();
+            } else {
+              $(this).fadeOut();
+            }
+          });
+        }
+      });
+
+
+      $('.image-container').click(function () {
+        const imgSrc = $(this).find('img').attr('src');
+        const $lightboxImg = $('#lightbox-image');
+
+        if ($lightboxImg.attr('src') === imgSrc && $('#lightbox').css('display') !== 'none') {
+          // If the same image is clicked again, close the lightbox
+          $('#lightbox').fadeOut();
+          $('#lightbox-content').removeClass('active');
+          $('body').removeClass('lightbox-open');
+          $('#lightbox-overlay').fadeOut();
+        } else {
+          // Open the lightbox with the clicked image
+          $lightboxImg.attr('src', imgSrc);
+          $('#lightbox').fadeIn();
+          $('#lightbox-content').addClass('active');
+          $('body').addClass('lightbox-open');
+          $('#lightbox-overlay').fadeIn();
+        }
+      });
+
+      $('#close, #lightbox-overlay').click(function () {
+        $('#lightbox').fadeOut();
+        $('#lightbox-content').removeClass('active');
+        $('body').removeClass('lightbox-open');
+        $('#lightbox-overlay').fadeOut();
+      });
+    });
+  </script>
+
+</body>
+
+</html>
